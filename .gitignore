@@ -1,6 +1,7 @@
 # 依赖
 node_modules/
 .venv/
+.vite/
 __pycache__/
 *.pyc
 
