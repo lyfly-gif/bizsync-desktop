@@ -1,0 +1,16 @@
+name: Test Matrix macOS Only
+
+on:
+  push:
+    branches: [test-matrix-mac]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: echo "macOS matrix works"
