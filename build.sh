@@ -60,9 +60,7 @@ npm ci
 npm run build
 
 echo "=== 4. 构建 Tauri 桌面应用 ==="
-cd src-tauri
-cargo tauri build
-cd ..
+npx tauri build
 
 echo "=== 构建完成 ==="
 echo "产物位置："
