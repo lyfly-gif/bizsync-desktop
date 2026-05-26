@@ -42,8 +42,7 @@
       "../create_logger.py": "create_logger.py",
       "../app.py": "app.py",
       "../__init__.py": "__init__.py",
-      "../bizsync-backend": "bizsync-backend",
-      "../bizsync-backend.exe": "bizsync-backend.exe"
+      "../bizsync-backend": "bizsync-backend"
     },
     "targets": ["dmg", "nsis"],
     "windows": {

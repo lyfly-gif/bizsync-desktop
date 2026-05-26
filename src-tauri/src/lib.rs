@@ -20,11 +20,7 @@ fn backend_binary_path() -> Option<std::path::PathBuf> {
     let exe = std::env::current_exe().ok()?;
     let exe_dir = exe.parent()?;
 
-    let name = if cfg!(windows) {
-        "bizsync-backend.exe"
-    } else {
-        "bizsync-backend"
-    };
+    let name = "bizsync-backend";
 
     // 1. Same directory as Tauri binary (Windows / Linux AppImage)
     let path = exe_dir.join(name);
