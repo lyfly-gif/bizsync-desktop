@@ -51,6 +51,7 @@ jobs:
             SEP=":"
           fi
           pyinstaller --onefile \
+            --distpath dist-python \
             --name ${{ matrix.pyinstaller_name }} \
             --add-data "backend${SEP}backend" \
             --add-data "utils${SEP}utils" \
@@ -86,7 +87,7 @@ jobs:
         shell: bash
 
       - name: Copy PyInstaller output to project root
-        run: cp dist/${{ matrix.pyinstaller_name }} .
+        run: cp dist-python/${{ matrix.pyinstaller_name }} .
         shell: bash
 
       - name: Setup Node.js
@@ -101,8 +102,15 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Build Tauri app
-        run: cargo tauri build
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            BUNDLES="nsis"
+          else
+            BUNDLES="dmg"
+          fi
+          cargo tauri build --bundles "$BUNDLES"
         working-directory: src-tauri
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
