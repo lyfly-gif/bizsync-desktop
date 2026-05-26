@@ -2,6 +2,7 @@ name: Build & Release
 
 on:
   push:
+    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 
@@ -29,7 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ---- Python 后端 ----
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -45,13 +45,18 @@ jobs:
 
       - name: Build backend with PyInstaller
         run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            SEP=";"
+          else
+            SEP=":"
+          fi
           pyinstaller --onefile \
             --name ${{ matrix.pyinstaller_name }} \
-            --add-data "backend:backend" \
-            --add-data "utils:utils" \
-            --add-data "config.py:." \
-            --add-data "main_prompts.py:." \
-            --add-data "create_logger.py:." \
+            --add-data "backend${SEP}backend" \
+            --add-data "utils${SEP}utils" \
+            --add-data "config.py${SEP}." \
+            --add-data "main_prompts.py${SEP}." \
+            --add-data "create_logger.py${SEP}." \
             --hidden-import=uvicorn \
             --hidden-import=uvicorn.loops.auto \
             --hidden-import=uvicorn.protocols.http.auto \
@@ -59,10 +64,24 @@ jobs:
             --hidden-import=mysql.connector \
             --hidden-import=langgraph \
             --hidden-import=langchain_openai \
+            --hidden-import=langchain_core \
             --hidden-import=bcrypt \
-            --hidden-import=python-docx \
+            --hidden-import=pydantic \
+            --hidden-import=pydantic.deprecated.decorator \
+            --hidden-import=aiofiles \
+            --hidden-import=python_multipart \
+            --hidden-import=jose \
+            --hidden-import=dotenv \
+            --hidden-import=pytz \
+            --hidden-import=schedule \
+            --hidden-import=jinja2 \
+            --hidden-import=websockets \
+            --hidden-import=docx \
             --hidden-import=PyPDF2 \
             --hidden-import=pdfplumber \
+            --hidden-import=openai \
+            --collect-submodules=uvicorn \
+            --collect-submodules=fastapi \
             backend/entry.py
         shell: bash
 
@@ -70,7 +89,6 @@ jobs:
         run: cp dist/${{ matrix.pyinstaller_name }} .
         shell: bash
 
-      # ---- 前端 ----
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -79,7 +97,6 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      # ---- Tauri ----
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -87,14 +104,12 @@ jobs:
         run: cargo tauri build
         working-directory: src-tauri
 
-      # ---- 上传产物 ----
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
           path: ${{ matrix.bundle_glob }}
 
-  # 合并 Release
   create-release:
     needs: build
     runs-on: ubuntu-latest
