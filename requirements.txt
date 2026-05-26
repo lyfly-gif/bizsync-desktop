@@ -1,0 +1,37 @@
+# ============================================================
+# BizSync — Python 依赖
+# 安装: pip install -r requirements.txt
+# ============================================================
+
+# --- Web 框架 ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+aiofiles>=24.0
+
+# --- 数据库 ---
+mysql-connector-python>=9.0
+
+# --- 认证 ---
+python-jose[cryptography]>=3.3
+bcrypt>=4.1
+
+# --- 数据校验 ---
+pydantic>=2.0
+
+# --- LLM / AI ---
+langchain-openai>=0.2
+langchain-core>=0.3
+langgraph>=0.2
+openai>=1.0
+
+# --- ASR 语音转写 ---
+funasr>=1.0
+soundfile>=0.12
+torch>=2.0
+faster-whisper>=1.0
+
+# --- 工具 ---
+schedule>=1.2
+pytz>=2024.1
+python-dotenv>=1.0

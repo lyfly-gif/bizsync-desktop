@@ -1,0 +1,32 @@
+# 依赖
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# 构建产物
+dist/
+dist-ssr/
+src-tauri/target/
+*.dmg
+*.msi
+*.exe
+
+# PyInstaller 产物
+bizsync-backend
+bizsync-backend.exe
+build/
+*.spec
+
+# 环境变量（含真实密钥）
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
