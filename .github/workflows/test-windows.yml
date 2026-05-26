@@ -1,0 +1,11 @@
+name: Test Windows
+
+on:
+  push:
+    branches: [test-windows]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - run: echo "Windows works"
