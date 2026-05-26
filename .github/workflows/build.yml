@@ -2,7 +2,6 @@ name: Build & Release
 
 on:
   push:
-    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 
@@ -46,18 +45,13 @@ jobs:
 
       - name: Build backend with PyInstaller
         run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            SEP=";"
-          else
-            SEP=":"
-          fi
           pyinstaller --onefile \
             --name ${{ matrix.pyinstaller_name }} \
-            --add-data "backend${SEP}backend" \
-            --add-data "utils${SEP}utils" \
-            --add-data "config.py${SEP}." \
-            --add-data "main_prompts.py${SEP}." \
-            --add-data "create_logger.py${SEP}." \
+            --add-data "backend:backend" \
+            --add-data "utils:utils" \
+            --add-data "config.py:." \
+            --add-data "main_prompts.py:." \
+            --add-data "create_logger.py:." \
             --hidden-import=uvicorn \
             --hidden-import=uvicorn.loops.auto \
             --hidden-import=uvicorn.protocols.http.auto \
@@ -65,24 +59,10 @@ jobs:
             --hidden-import=mysql.connector \
             --hidden-import=langgraph \
             --hidden-import=langchain_openai \
-            --hidden-import=langchain_core \
             --hidden-import=bcrypt \
-            --hidden-import=pydantic \
-            --hidden-import=pydantic.deprecated.decorator \
-            --hidden-import=aiofiles \
-            --hidden-import=python_multipart \
-            --hidden-import=jose \
-            --hidden-import=dotenv \
-            --hidden-import=pytz \
-            --hidden-import=schedule \
-            --hidden-import=jinja2 \
-            --hidden-import=websockets \
-            --hidden-import=docx \
+            --hidden-import=python-docx \
             --hidden-import=PyPDF2 \
             --hidden-import=pdfplumber \
-            --hidden-import=openai \
-            --collect-submodules=uvicorn \
-            --collect-submodules=fastapi \
             backend/entry.py
         shell: bash
 
