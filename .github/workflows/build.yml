@@ -2,6 +2,7 @@ name: Build & Release
 
 on:
   push:
+    branches: [main]
     tags: ['v*']
   workflow_dispatch:
 
@@ -76,7 +77,7 @@ jobs:
             --hidden-import=schedule \
             --hidden-import=jinja2 \
             --hidden-import=websockets \
-            --hidden-import=python-docx \
+            --hidden-import=docx \
             --hidden-import=PyPDF2 \
             --hidden-import=pdfplumber \
             --hidden-import=openai \
